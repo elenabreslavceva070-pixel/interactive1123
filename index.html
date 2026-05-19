@@ -11,94 +11,98 @@
             box-sizing: border-box;
         }
 
+        /* Полностью белый фон, без градиентов */
         body {
-            background: linear-gradient(145deg, #eef2f7 0%, #d9e2ec 100%);
+            background: #ffffff;
             font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 2rem 1rem;
+            padding: 1.5rem;
         }
 
+        /* Тренажёр — белая таблица в серой оконтовке */
         .trainer-container {
-            max-width: 1050px;
+            max-width: 880px;
             width: 100%;
             background: #ffffff;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e2e8f0;
+            border: 1px solid #d4dce4;
+            box-shadow: none;
+            margin: 0 auto;
         }
 
         .trainer-table-wrapper {
-            overflow-x: auto;
+            overflow-x: visible;
+            overflow-y: visible;
         }
 
         .trainer-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             line-height: 1.4;
             background: white;
             table-layout: fixed;
         }
 
         .trainer-table thead tr {
-            background: #f5f7fa;
+            background: #f8f9fb;
             border-bottom: 1px solid #e2e8f0;
         }
 
         .trainer-table th {
             text-align: left;
-            padding: 0.9rem 0.75rem;
+            padding: 0.8rem 0.6rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             letter-spacing: -0.01em;
             color: #1e2f3e;
-            background: #f5f7fa;
+            background: #f8f9fb;
             border-bottom: 1px solid #e2e8f0;
             white-space: nowrap;
         }
 
         .trainer-table td {
-            padding: 0.9rem 0.75rem;
+            padding: 0.8rem 0.6rem;
             vertical-align: top;
             border-bottom: 1px solid #edf2f7;
             background-color: white;
             transition: background 0.15s ease;
         }
 
-        /* ПЕРВАЯ КОЛОНКА — расширенная, читаемая */
+        /* ПЕРВАЯ КОЛОНКА — широкая, читаемая */
         .trainer-table th:first-child,
         .trainer-table td:first-child {
-            width: 210px;
-            min-width: 180px;
+            width: 32%;
+            min-width: 150px;
             font-weight: 600;
-            background-color: #fafcff;
+            background-color: #ffffff;
             border-right: 1px solid #e9edf2;
             color: #0b2b3b;
             word-break: break-word;
             white-space: normal;
         }
 
-        /* КОЛОНКИ С ВЫПАДАЮЩИМИ СПИСКАМИ — более узкие, компактные */
+        /* КОЛОНКИ С ВЫПАДАЮЩИМИ СПИСКАМИ — узкие, компактные */
         .trainer-table th:nth-child(2),
         .trainer-table th:nth-child(3) {
-            width: auto;
-            max-width: 380px;
+            width: 34%;
+            white-space: normal;
+            word-break: break-word;
         }
 
         .trainer-table td:nth-child(2),
         .trainer-table td:nth-child(3) {
             background-color: white;
             vertical-align: top;
-            width: auto;
         }
 
-        /* ВЫПАДАЮЩИЙ СПИСОК — компактный, строгая рамка #95CAFA, без скруглений */
+        /* ВЫПАДАЮЩИЙ СПИСОК — рамка #95CAFA, без скруглений */
         .select-option {
             width: 100%;
-            padding: 0.5rem 0.65rem;
-            font-size: 0.8rem;
+            padding: 0.45rem 0.6rem;
+            font-size: 0.75rem;
             font-family: 'Segoe UI', 'Inter', inherit;
             font-weight: 500;
             color: #1f3b4c;
@@ -108,10 +112,10 @@
             cursor: pointer;
             transition: all 0.15s ease;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234f7a9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%234f7a9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 0.65rem center;
-            background-size: 12px;
+            background-position: right 0.6rem center;
+            background-size: 10px;
             line-height: 1.3;
             white-space: normal;
             word-break: break-word;
@@ -146,7 +150,7 @@
         }
 
         .button-group {
-            padding: 1.2rem 1rem 1.4rem 1rem;
+            padding: 1rem 1rem 1.2rem 1rem;
             display: flex;
             justify-content: center;
             border-top: 1px solid #e9edf2;
@@ -156,8 +160,8 @@
         .check-btn {
             background: #1f4970;
             border: none;
-            padding: 0.6rem 1.8rem;
-            font-size: 0.85rem;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
             font-weight: 600;
             font-family: inherit;
             color: white;
@@ -166,7 +170,7 @@
             letter-spacing: 0.3px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             border-radius: 0px;
         }
 
@@ -181,37 +185,37 @@
 
         .message-area {
             text-align: center;
-            font-size: 0.8rem;
-            padding: 0.5rem 1rem 1rem 1rem;
+            font-size: 0.75rem;
+            padding: 0.4rem 1rem 0.9rem 1rem;
             color: #2c5a7a;
             font-weight: 500;
             background: white;
             border-top: 1px solid #e9edf2;
         }
 
-        /* Убираем горизонтальный скролл на больших экранах */
-        @media (min-width: 900px) {
-            .trainer-table-wrapper {
-                overflow-x: visible;
-            }
-            .trainer-table {
-                table-layout: auto;
-            }
+        /* Полностью убираем горизонтальный скролл */
+        .trainer-table-wrapper {
+            overflow-x: visible;
         }
 
-        /* Адаптация для узких экранов — появляется скролл, но это нормально */
-        @media (max-width: 850px) {
-            .trainer-table {
-                min-width: 680px;
+        /* Адаптация для очень маленьких экранов */
+        @media (max-width: 680px) {
+            body {
+                padding: 0.5rem;
+            }
+            .trainer-table th,
+            .trainer-table td {
+                padding: 0.6rem 0.4rem;
             }
             .trainer-table th:first-child,
             .trainer-table td:first-child {
-                width: 160px;
-                min-width: 140px;
+                width: 28%;
+                min-width: 110px;
             }
             .select-option {
-                font-size: 0.75rem;
-                padding: 0.45rem 0.6rem;
+                font-size: 0.7rem;
+                padding: 0.4rem 0.5rem;
+                background-position: right 0.5rem center;
             }
         }
 
@@ -223,7 +227,7 @@
             filter: brightness(0.97);
         }
 
-        /* строгий стиль без скруглений */
+        /* Строгий стиль без скруглений */
         .trainer-container, .trainer-table, .check-btn, .select-option {
             border-radius: 0px;
         }
@@ -231,6 +235,13 @@
         .trainer-table td {
             word-break: break-word;
             white-space: normal;
+        }
+
+        .select-option option {
+            white-space: normal;
+            word-break: break-word;
+            font-size: 0.73rem;
+            padding: 4px;
         }
     </style>
 </head>
@@ -298,7 +309,7 @@
             const row = document.createElement('tr');
             row.setAttribute('data-row-idx', i);
 
-            // Вопрос (первая колонка — расширенная)
+            // Вопрос (первая колонка)
             const tdQuestion = document.createElement('td');
             tdQuestion.textContent = data.question;
             row.appendChild(tdQuestion);
@@ -314,7 +325,7 @@
             defaultFull.value = '';
             defaultFull.disabled = true;
             defaultFull.selected = true;
-            defaultFull.textContent = '— выберите вариант —';
+            defaultFull.textContent = '— выберите —';
             fullSelect.appendChild(defaultFull);
             
             const optionFull = document.createElement('option');
@@ -341,7 +352,7 @@
             defaultSimpl.value = '';
             defaultSimpl.disabled = true;
             defaultSimpl.selected = true;
-            defaultSimpl.textContent = '— выберите вариант —';
+            defaultSimpl.textContent = '— выберите —';
             simplSelect.appendChild(defaultSimpl);
             
             const optionFullForSimpl = document.createElement('option');
@@ -414,16 +425,16 @@
         const messageDiv = document.getElementById('messageBox');
 
         if (!allSelected) {
-            messageDiv.innerHTML = '⚠️ Пожалуйста, выберите вариант ответа в обеих колонках для каждой строки перед проверкой.';
+            messageDiv.innerHTML = '⚠️ Выберите вариант в обеих колонках для каждой строки.';
             messageDiv.style.color = '#c96f0e';
             return;
         }
 
         if (correctCount === totalRows) {
-            messageDiv.innerHTML = `✅ Отлично! Все ${totalRows} строк заполнены верно. Вы прекрасно ориентируетесь в стандартах!`;
+            messageDiv.innerHTML = `✅ Отлично! Все ${totalRows} строк верны.`;
             messageDiv.style.color = '#1f7a4a';
         } else {
-            messageDiv.innerHTML = `❌ Правильных строк: ${correctCount} из ${totalRows}. Красным выделены строки, где выбран неверный вариант. В левой колонке должно быть первое описание, в правой — второе.`;
+            messageDiv.innerHTML = `❌ Правильных: ${correctCount} из ${totalRows}. В левой колонке — первое описание, в правой — второе.`;
             messageDiv.style.color = '#bc4e2c';
         }
     }
