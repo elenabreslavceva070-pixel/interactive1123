@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Интерактивный тренажёр | Стандарты учёта</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #eef2f7 0%, #d9e2ec 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .trainer-container {
+            max-width: 1050px;
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .trainer-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .trainer-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            background: white;
+            table-layout: fixed;
+        }
+
+        .trainer-table thead tr {
+            background: #f5f7fa;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .trainer-table th {
+            text-align: left;
+            padding: 0.9rem 0.75rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: -0.01em;
+            color: #1e2f3e;
+            background: #f5f7fa;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .trainer-table td {
+            padding: 0.9rem 0.75rem;
+            vertical-align: top;
+            border-bottom: 1px solid #edf2f7;
+            background-color: white;
+            transition: background 0.15s ease;
+        }
+
+        /* ПЕРВАЯ КОЛОНКА — расширенная, читаемая */
+        .trainer-table th:first-child,
+        .trainer-table td:first-child {
+            width: 210px;
+            min-width: 180px;
+            font-weight: 600;
+            background-color: #fafcff;
+            border-right: 1px solid #e9edf2;
+            color: #0b2b3b;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        /* КОЛОНКИ С ВЫПАДАЮЩИМИ СПИСКАМИ — более узкие, компактные */
+        .trainer-table th:nth-child(2),
+        .trainer-table th:nth-child(3) {
+            width: auto;
+            max-width: 380px;
+        }
+
+        .trainer-table td:nth-child(2),
+        .trainer-table td:nth-child(3) {
+            background-color: white;
+            vertical-align: top;
+            width: auto;
+        }
+
+        /* ВЫПАДАЮЩИЙ СПИСОК — компактный, строгая рамка #95CAFA, без скруглений */
+        .select-option {
+            width: 100%;
+            padding: 0.5rem 0.65rem;
+            font-size: 0.8rem;
+            font-family: 'Segoe UI', 'Inter', inherit;
+            font-weight: 500;
+            color: #1f3b4c;
+            background-color: #ffffff;
+            border: 1.5px solid #95CAFA;
+            border-radius: 0px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234f7a9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.65rem center;
+            background-size: 12px;
+            line-height: 1.3;
+            white-space: normal;
+            word-break: break-word;
+            text-overflow: ellipsis;
+        }
+
+        .select-option:hover {
+            border-color: #6fa8dc;
+            background-color: #fefefe;
+        }
+
+        .select-option:focus {
+            outline: none;
+            border-color: #3d7eb3;
+            box-shadow: 0 0 0 2px rgba(61, 126, 179, 0.1);
+        }
+
+        /* Правильная строка — зелёный фон */
+        .row-correct {
+            background-color: #eafaf1 !important;
+        }
+        .row-correct td {
+            background-color: #eafaf1 !important;
+        }
+
+        /* Неправильная строка — красный фон */
+        .row-wrong {
+            background-color: #fee9e9 !important;
+        }
+        .row-wrong td {
+            background-color: #fee9e9 !important;
+        }
+
+        .button-group {
+            padding: 1.2rem 1rem 1.4rem 1rem;
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid #e9edf2;
+            background: #ffffff;
+        }
+
+        .check-btn {
+            background: #1f4970;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 0px;
+        }
+
+        .check-btn:hover {
+            background: #0e3b5c;
+            transform: translateY(-1px);
+        }
+
+        .check-btn:active {
+            transform: translateY(1px);
+        }
+
+        .message-area {
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem 1rem 1rem;
+            color: #2c5a7a;
+            font-weight: 500;
+            background: white;
+            border-top: 1px solid #e9edf2;
+        }
+
+        /* Убираем горизонтальный скролл на больших экранах */
+        @media (min-width: 900px) {
+            .trainer-table-wrapper {
+                overflow-x: visible;
+            }
+            .trainer-table {
+                table-layout: auto;
+            }
+        }
+
+        /* Адаптация для узких экранов — появляется скролл, но это нормально */
+        @media (max-width: 850px) {
+            .trainer-table {
+                min-width: 680px;
+            }
+            .trainer-table th:first-child,
+            .trainer-table td:first-child {
+                width: 160px;
+                min-width: 140px;
+            }
+            .select-option {
+                font-size: 0.75rem;
+                padding: 0.45rem 0.6rem;
+            }
+        }
+
+        .trainer-table tbody tr:hover td {
+            background-color: #fafcff;
+        }
+        .trainer-table tbody tr.row-correct:hover td,
+        .trainer-table tbody tr.row-wrong:hover td {
+            filter: brightness(0.97);
+        }
+
+        /* строгий стиль без скруглений */
+        .trainer-container, .trainer-table, .check-btn, .select-option {
+            border-radius: 0px;
+        }
+
+        .trainer-table td {
+            word-break: break-word;
+            white-space: normal;
+        }
+    </style>
+</head>
+<body>
+<div class="trainer-container">
+    <div class="trainer-table-wrapper">
+        <table class="trainer-table">
+            <thead>
+                <tr>
+                    <th>Вопросы учета</th>
+                    <th>Полностью применяем стандарт</th>
+                    <th>Применяем упрощение по стандарту</th>
+                </tr>
+            </thead>
+            <tbody id="trainer-rows">
+                <!-- строки генерируются скриптом -->
+            </tbody>
+        </table>
+    </div>
+    <div class="button-group">
+        <button class="check-btn" id="checkBtn">✓ Проверить ответы</button>
+    </div>
+    <div id="messageBox" class="message-area"></div>
+</div>
+
+<script>
+    // Данные из файла (полное соответствие исходной таблице)
+    const questionsData = [
+        {
+            question: "Выручка",
+            fullText: "Выручку признают только после того, как выполнены работы или передан товар.",
+            simplifiedText: "Выручку признают кассовым методом."
+        },
+        {
+            question: "Долгосрочные договоры",
+            fullText: "Выручку признают по мере поэтапного исполнения договора.",
+            simplifiedText: "Можно не применять сложные правила длительных договоров и признавать выручку сразу."
+        },
+        {
+            question: "Скидки при оценке выручки",
+            fullText: "Выручку рассчитают с учетом ожидаемой цены сделки.",
+            simplifiedText: "Не учитывают скидку в выручке и списывают ее как расходы периода."
+        },
+        {
+            question: "Отсрочка платежа > 12 месяцев",
+            fullText: "Дисконтируют выручку, если это существенно для отчетности",
+            simplifiedText: "Не дисконтируют выручку при длительных отсрочках"
+        },
+        {
+            question: "Бартер / натуральный обмен",
+            fullText: "Оценивают выручку по справедливой стоимости аналогичной продукции",
+            simplifiedText: "Не оценивают справедливую стоимость, используют обычную цену продажи аналогов"
+        }
+    ];
+
+    let rowsData = [];
+
+    function buildTable() {
+        const tbody = document.getElementById('trainer-rows');
+        tbody.innerHTML = '';
+        rowsData = [];
+
+        for (let i = 0; i < questionsData.length; i++) {
+            const data = questionsData[i];
+            const row = document.createElement('tr');
+            row.setAttribute('data-row-idx', i);
+
+            // Вопрос (первая колонка — расширенная)
+            const tdQuestion = document.createElement('td');
+            tdQuestion.textContent = data.question;
+            row.appendChild(tdQuestion);
+
+            // Колонка "Полностью применяем стандарт"
+            const tdFull = document.createElement('td');
+            const fullSelect = document.createElement('select');
+            fullSelect.className = 'select-option';
+            fullSelect.setAttribute('data-row', i);
+            fullSelect.setAttribute('data-col', 'full');
+            
+            const defaultFull = document.createElement('option');
+            defaultFull.value = '';
+            defaultFull.disabled = true;
+            defaultFull.selected = true;
+            defaultFull.textContent = '— выберите вариант —';
+            fullSelect.appendChild(defaultFull);
+            
+            const optionFull = document.createElement('option');
+            optionFull.value = data.fullText;
+            optionFull.textContent = data.fullText;
+            fullSelect.appendChild(optionFull);
+            
+            const optionSimpl = document.createElement('option');
+            optionSimpl.value = data.simplifiedText;
+            optionSimpl.textContent = data.simplifiedText;
+            fullSelect.appendChild(optionSimpl);
+            
+            tdFull.appendChild(fullSelect);
+            row.appendChild(tdFull);
+
+            // Колонка "Применяем упрощение по стандарту"
+            const tdSimpl = document.createElement('td');
+            const simplSelect = document.createElement('select');
+            simplSelect.className = 'select-option';
+            simplSelect.setAttribute('data-row', i);
+            simplSelect.setAttribute('data-col', 'simpl');
+            
+            const defaultSimpl = document.createElement('option');
+            defaultSimpl.value = '';
+            defaultSimpl.disabled = true;
+            defaultSimpl.selected = true;
+            defaultSimpl.textContent = '— выберите вариант —';
+            simplSelect.appendChild(defaultSimpl);
+            
+            const optionFullForSimpl = document.createElement('option');
+            optionFullForSimpl.value = data.fullText;
+            optionFullForSimpl.textContent = data.fullText;
+            simplSelect.appendChild(optionFullForSimpl);
+            
+            const optionSimplForSimpl = document.createElement('option');
+            optionSimplForSimpl.value = data.simplifiedText;
+            optionSimplForSimpl.textContent = data.simplifiedText;
+            simplSelect.appendChild(optionSimplForSimpl);
+            
+            tdSimpl.appendChild(simplSelect);
+            row.appendChild(tdSimpl);
+
+            tbody.appendChild(row);
+            
+            rowsData.push({
+                rowElement: row,
+                fullSelect: fullSelect,
+                simplSelect: simplSelect,
+                correctFull: data.fullText,
+                correctSimpl: data.simplifiedText
+            });
+
+            // Сброс подсветки при изменении любого селекта
+            const clearRowHighlight = () => {
+                row.classList.remove('row-correct', 'row-wrong');
+                const msgDiv = document.getElementById('messageBox');
+                if (msgDiv.innerText.includes("✅") || msgDiv.innerText.includes("❌") || msgDiv.innerText.includes("Верно")) {
+                    msgDiv.innerHTML = ' ';
+                }
+            };
+            fullSelect.addEventListener('change', clearRowHighlight);
+            simplSelect.addEventListener('change', clearRowHighlight);
+        }
+    }
+
+    function validateAnswers() {
+        rowsData.forEach(item => {
+            item.rowElement.classList.remove('row-correct', 'row-wrong');
+        });
+
+        let allSelected = true;
+        let correctCount = 0;
+
+        for (let i = 0; i < rowsData.length; i++) {
+            const { fullSelect, simplSelect, rowElement, correctFull, correctSimpl } = rowsData[i];
+            const fullVal = fullSelect.value;
+            const simplVal = simplSelect.value;
+
+            if (!fullVal || !simplVal || fullVal === '' || simplVal === '') {
+                allSelected = false;
+                continue;
+            }
+
+            const isFullCorrect = (fullVal === correctFull);
+            const isSimplCorrect = (simplVal === correctSimpl);
+            const isRowCorrect = (isFullCorrect && isSimplCorrect);
+
+            if (isRowCorrect) {
+                correctCount++;
+                rowElement.classList.add('row-correct');
+            } else {
+                rowElement.classList.add('row-wrong');
+            }
+        }
+
+        const totalRows = rowsData.length;
+        const messageDiv = document.getElementById('messageBox');
+
+        if (!allSelected) {
+            messageDiv.innerHTML = '⚠️ Пожалуйста, выберите вариант ответа в обеих колонках для каждой строки перед проверкой.';
+            messageDiv.style.color = '#c96f0e';
+            return;
+        }
+
+        if (correctCount === totalRows) {
+            messageDiv.innerHTML = `✅ Отлично! Все ${totalRows} строк заполнены верно. Вы прекрасно ориентируетесь в стандартах!`;
+            messageDiv.style.color = '#1f7a4a';
+        } else {
+            messageDiv.innerHTML = `❌ Правильных строк: ${correctCount} из ${totalRows}. Красным выделены строки, где выбран неверный вариант. В левой колонке должно быть первое описание, в правой — второе.`;
+            messageDiv.style.color = '#bc4e2c';
+        }
+    }
+
+    function init() {
+        buildTable();
+        const msgDiv = document.getElementById('messageBox');
+        msgDiv.innerHTML = ' ';
+        const checkBtn = document.getElementById('checkBtn');
+        const newBtn = checkBtn.cloneNode(true);
+        checkBtn.parentNode.replaceChild(newBtn, checkBtn);
+        newBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            validateAnswers();
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
